@@ -70,6 +70,9 @@ DO_MINOR_GRID = True
 # A pair (width, height) describing the size of the plot in centimeters.
 FIGSIZE = (5, 5)
 
+# Whether to show error bars for the standard deviation
+DO_STD_DEV_ERROR_BARS = True
+
 
 def get_bar_height(values):
     """Get the height of the bar, given a Numpy array of Y coordinates.
@@ -113,9 +116,12 @@ for filename in DATA_FILES:
         print(f"Unable to load file {filename!r}. Make sure it exists and has the right format.")
         exit(1)
 
+xs = np.arange(len(datasets))
+ys = np.vectorize(get_bar_height)(datasets)
+
 ax.bar(
-    x=np.arange(len(datasets)),
-    height=np.vectorize(get_bar_height)(datasets),
+    x=xs,
+    height=ys - BAR_BOTTOM,
     bottom=BAR_BOTTOM,
     color=BAR_COLORS,
     zorder=2,
@@ -128,7 +134,7 @@ for i, dataset in enumerate(datasets):
         x=x,
         y=dataset,
         color=DOT_COLORS[i],
-        zorder=3,
+        zorder=4,
     )
 
 
@@ -152,6 +158,15 @@ if DO_MINOR_GRID or DO_MAJOR_GRID:
         which=which,
         axis='y',
         zorder=1,
+    )
+if DO_STD_DEV_ERROR_BARS:
+    ax.errorbar(
+        x=xs,
+        y=ys,
+        yerr=list(map(np.std, datasets)),
+        fmt='k,',
+        capsize=4,
+        zorder=6,
     )
 
 fig.savefig('out.png')
