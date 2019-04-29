@@ -34,15 +34,15 @@ uninfected.csv
 # For each file, give a color for the rectangle. Specify only one color if you
 # want to use the same color for all of them.
 BAR_COLORS = r'''
-red
-blue
+#FF9999
+#9999FF
 '''
 
 # For each file, give a color for the dots. Specify only one color if you
 # want to use the same color for all of them.
 DOT_COLORS = r'''
-darkred
-darkblue
+#FF3333
+#3333FF
 '''
 
 # This is the Y coordinate of the bottom of the bar. You can leave it at `0`, or
